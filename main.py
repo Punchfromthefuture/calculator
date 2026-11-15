@@ -10,7 +10,7 @@ def main():
         print("Дробные числа вводите через точку, например: 2.5")
         return
 
-    operation = input("Введите операцию (+, -, *, /): ").strip()
+    operation = input("Введите операцию (+, -, *, /, **): ").strip()
 
     if operation == "+":
         result = first_number + second_number
@@ -23,8 +23,17 @@ def main():
             print("Ошибка: делить на ноль нельзя.")
             return
         result = first_number / second_number
+    elif operation == "**":
+        try:
+            result = first_number ** second_number
+        except ZeroDivisionError:
+            print("Ошибка: ноль нельзя возводить в отрицательную степень.")
+            return
+        except OverflowError:
+            print("Ошибка: результат возведения в степень слишком большой.")
+            return
     else:
-        print("Ошибка: неизвестная операция. Используйте +, -, * или /.")
+        print("Ошибка: неизвестная операция. Используйте +, -, *, / или **.")
         return
 
     print(f"Результат: {result}")
