@@ -15,28 +15,35 @@ def get_number(prompt: str) -> float:
 def main():
     print("=== Модульный Калькулятор v2.0 ===")
 
-    num1 = get_number("Введите первое число: ")
-    num2 = get_number("Введите второе число: ")
-    operation = input("Выберите операцию (+, -, *, /): ")
+    operation = input(
+        "Выберите операцию (+, -, *, /, sqrt): "
+    ).strip().lower()
+
+    if operation not in ("+", "-", "*", "/", "sqrt"):
+        print("Неизвестная операция!")
+        return
 
     try:
-        if operation == '+':
-            result = calc_logic.add(num1, num2)
-        elif operation == '-':
-            result = calc_logic.subtract(num1, num2)
-        elif operation == '*':
-            result = calc_logic.multiply(num1, num2)
-        elif operation == '/':
-            result = calc_logic.divide(num1, num2)
+        if operation == "sqrt":
+            num = get_number("Введите число для извлечения корня: ")
+            result = calc_logic.square_root(num)
         else:
-            print("Неизвестная операция!")
-            return
+            num1 = get_number("Введите первое число: ")
+            num2 = get_number("Введите второе число: ")
+
+            if operation == "+":
+                result = calc_logic.add(num1, num2)
+            elif operation == "-":
+                result = calc_logic.subtract(num1, num2)
+            elif operation == "*":
+                result = calc_logic.multiply(num1, num2)
+            elif operation == "/":
+                result = calc_logic.divide(num1, num2)
 
         print(f"Результат: {result}")
 
-    except ValueError as e:
-        print(f"Ошибка вычисления: {e}")
+    except (ValueError, ZeroDivisionError) as error:
+        print(f"Ошибка вычисления: {error}")
 
 if __name__ == "__main__":
-
     main()
