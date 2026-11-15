@@ -1,42 +1,42 @@
-#Автор: Терещук Д.В., Группа ПРЗ-23, 15.11.2026
+"""
+Главный модуль приложения Калькулятор.
+Отвечает за взаимодействие с пользователем.
+"""
+import calc_logic  # Импортируем наш новый модуль
+
+def get_number(prompt: str) -> float:
+    """Запрашивает у пользователя число с обработкой ошибок."""
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Ошибка: введите корректное число!")
+
 def main():
-    print("Калькулятор")
+    print("=== Модульный Калькулятор v2.0 ===")
+
+    num1 = get_number("Введите первое число: ")
+    num2 = get_number("Введите второе число: ")
+    operation = input("Выберите операцию (+, -, *, /): ")
 
     try:
-        first_number = float(input("Введите первое число: "))
-        second_number = float(input("Введите второе число: "))
-    except ValueError:
-        print("Ошибка: необходимо вводить числа, а не буквы.")
-        print("Дробные числа вводите через точку, например: 2.5")
-        return
-
-    operation = input("Введите операцию (+, -, *, /, **): ").strip()
-
-    if operation == "+":
-        result = first_number + second_number
-    elif operation == "-":
-        result = first_number - second_number
-    elif operation == "*":
-        result = first_number * second_number
-    elif operation == "/":
-        if second_number == 0:
-            print("Ошибка: делить на ноль нельзя.")
+        if operation == '+':
+            result = calc_logic.add(num1, num2)
+        elif operation == '-':
+            result = calc_logic.subtract(num1, num2)
+        elif operation == '*':
+            result = calc_logic.multiply(num1, num2)
+        elif operation == '/':
+            result = calc_logic.divide(num1, num2)
+        else:
+            print("Неизвестная операция!")
             return
-        result = first_number / second_number
-    elif operation == "**":
-        try:
-            result = first_number ** second_number
-        except ZeroDivisionError:
-            print("Ошибка: ноль нельзя возводить в отрицательную степень.")
-            return
-        except OverflowError:
-            print("Ошибка: результат возведения в степень слишком большой.")
-            return
-    else:
-        print("Ошибка: неизвестная операция. Используйте +, -, *, / или **.")
-        return
 
-    print(f"Результат: {result}")
+        print(f"Результат: {result}")
+
+    except ValueError as e:
+        print(f"Ошибка вычисления: {e}")
 
 if __name__ == "__main__":
+
     main()
