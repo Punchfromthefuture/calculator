@@ -23,6 +23,8 @@ def main():
         print("1. Выполнить вычисление")
         print("2. Показать историю (последние 10)")
         print("3. Очистить историю")
+        print("4. Показать статистику")
+        print("5. Найти записи в истории")
         print("0. Выход")
 
         choice = input("Выберите действие: ")
@@ -37,6 +39,10 @@ def main():
         elif choice == '3':
             db_manager.clear_history()
             print("История очищена.")
+        elif choice == '4':
+            show_statistics()
+        elif choice == '5':
+            find_history()
         else:
             print("Неверный выбор. Попробуйте снова.")
 
@@ -76,6 +82,38 @@ def show_history():
 
     print("\n--- История вычислений ---")
     for record in history:
+        print(f"  [{record[3]}] {record[1]} = {record[2]}")
+
+def show_statistics():
+    """Выводит статистику вычислений или сообщение о пустой истории."""
+    statistics = db_manager.get_statistics()
+
+    if statistics["count"] == 0:
+        print("История пуста. Статистика пока недоступна.")
+        return
+
+    print("\n--- Статистика вычислений ---")
+    print(f"Всего вычислений: {statistics['count']}")
+    print(f"Средний результат: {statistics['average']}")
+    print(f"Максимальный результат: {statistics['maximum']}")
+    print(f"Минимальный результат: {statistics['minimum']}")
+
+def find_history():
+    """Запрашивает текст поиска и выводит найденные записи истории."""
+    keyword = input("Введите фрагмент выражения для поиска: ").strip()
+
+    if not keyword:
+        print("Ошибка: поисковый запрос не должен быть пустым.")
+        return
+
+    records = db_manager.search_history(keyword)
+
+    if not records:
+        print("Записи не найдены.")
+        return
+
+    print(f"\n--- Найдено записей: {len(records)} ---")
+    for record in records:
         print(f"  [{record[3]}] {record[1]} = {record[2]}")
 
 if __name__ == "__main__":

@@ -96,3 +96,71 @@ def clear_history():
     
     conn.commit()
     conn.close()
+
+def get_statistics() -> dict:
+    """Возвращает статистику результатов сохранённых вычислений.
+
+    Returns:
+        dict: Словарь с ключами:
+            count: Общее количество вычислений.
+            average: Среднее значение результатов.
+            maximum: Максимальный результат.
+            minimum: Минимальный результат.
+
+        Для пустой истории count равен 0, остальные значения — None.
+
+    Raises:
+        sqlite3.Error: Если произошла ошибка работы с базой данных.
+    """
+    conn = get_connection()
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT COUNT(*), AVG(result), MAX(result), MIN(result)
+            FROM history
+            """
+        )
+        count, average, maximum, minimum = cursor.fetchone()
+
+        return {
+            "count": count,
+            "average": average,
+            "maximum": maximum,
+            "minimum": minimum,
+        }
+    finally:
+        conn.close()
+
+def search_history(keyword: str) -> list:
+    """Ищет записи, выражение которых содержит указанный текст.
+
+    Args:
+        keyword (str): Фрагмент выражения для поиска, например "5".
+
+    Returns:
+        list: Список кортежей (id, expression, result, timestamp),
+            отсортированный от новых записей к старым.
+            Если совпадений нет, возвращается пустой список.
+
+    Raises:
+        sqlite3.Error: Если произошла ошибка работы с базой данных.
+    """
+    conn = get_connection()
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT id, expression, result, timestamp
+            FROM history
+            WHERE instr(expression, ?) > 0
+            ORDER BY id DESC
+            """,
+            (keyword,),
+        )
+
+        return cursor.fetchall()
+    finally:
+        conn.close()
