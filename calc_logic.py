@@ -48,3 +48,24 @@ def square_root(a: float) -> float:
 
     return math.sqrt(a)
 
+def modulo(a: float, b: float) -> float:
+    """Возвращает остаток от деления a на b.
+
+    Args:
+        a (float): Делимое.
+        b (float): Делитель, отличный от нуля.
+
+    Returns:
+        float: Остаток от деления a на b.
+
+    Raises:
+        ValueError: Если делитель равен нулю.
+
+    Examples:
+        >>> modulo(10, 3)
+        1
+    """
+    if b == 0:
+        raise ValueError("Нельзя вычислить остаток от деления на ноль.")
+
+    return a % b
