@@ -1,0 +1,17 @@
+Help on function square_root in module calc_logic:
+
+ssqquuaarree__rroooott(a: float) -> float
+    Вычисляет квадратный корень неотрицательного числа.
+    
+    Args:
+        a (float): Число, из которого извлекается корень.
+    
+    Returns:
+        float: Квадратный корень числа a.
+    
+    Raises:
+        ValueError: Если a меньше нуля.
+    
+    Examples:
+        >>> square_root(9)
+        3.0

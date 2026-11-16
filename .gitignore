@@ -1,4 +1,17 @@
+# Виртуальное окружение
 venv/
+env/
+
+# Скомпилированные файлы Python
 __pycache__/
-*.pyc
-.env
+*.py[cod]
+*$py.class
+
+# Файлы ОС
+.DS_Store
+Thumbs.db
+
+# Файлы баз данных
+*.db
+*.sqlite
+*.sqlite3
